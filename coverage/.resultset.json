@@ -222,17 +222,31 @@
           null
         ]
       },
+      "/home/bento/Documentos/Workspace/labs-code-test/spec/factories/account.rb": {
+        "lines": [
+          1,
+          1,
+          13,
+          13,
+          13,
+          13,
+          13,
+          13,
+          null,
+          null
+        ]
+      },
       "/home/bento/Documentos/Workspace/labs-code-test/spec/factories/user.rb": {
         "lines": [
           1,
           1,
-          15,
-          15,
-          15,
-          15,
-          15,
-          15,
-          15,
+          28,
+          28,
+          28,
+          28,
+          28,
+          28,
+          28,
           null,
           null
         ]
@@ -251,16 +265,25 @@
           null
         ]
       },
-      "/home/bento/Documentos/Workspace/labs-code-test/app/models/user.rb": {
+      "/home/bento/Documentos/Workspace/labs-code-test/app/models/account.rb": {
         "lines": [
           1,
           1,
           null,
           1,
+          null,
+          null,
+          null,
+          null,
           1,
+          null,
+          null,
+          null,
+          null,
+          null,
           1,
-          1,
-          1,
+          null,
+          null,
           1,
           1,
           null
@@ -272,8 +295,66 @@
           1,
           null
         ]
+      },
+      "/home/bento/Documentos/Workspace/labs-code-test/spec/models/user_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          16,
+          null,
+          1,
+          1,
+          2,
+          null,
+          null,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          null,
+          null,
+          1,
+          2,
+          2,
+          null,
+          null,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/bento/Documentos/Workspace/labs-code-test/app/models/user.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
       }
     },
-    "timestamp": 1596815671
+    "timestamp": 1596835046
   }
 }

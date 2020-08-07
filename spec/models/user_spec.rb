@@ -4,6 +4,10 @@ RSpec.describe User, type: :model do
   subject { create(:user) }
 
   describe 'validations' do
+    describe 'association' do
+      it { is_expected.to have_one(:account) }
+    end
+
     describe 'presence' do
       it { is_expected.to validate_presence_of(:full_name) }
       it { is_expected.to validate_presence_of(:document) }
