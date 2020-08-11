@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_182559) do
     t.date "birthday", null: false
     t.string "gender", limit: 1, null: false
     t.string "password", limit: 8, null: false
-    t.string "token", null: false
+    t.string "token", limit: 100, null: false
     t.index ["document"], name: "index_users_on_document", unique: true
     t.index ["token"], name: "index_users_on_token", unique: true
   end

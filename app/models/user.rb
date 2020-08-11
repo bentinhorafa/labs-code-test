@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   has_one :account, dependent: :nullify
-  has_secure_token
 
   validates :full_name, presence: true, length: { maximum: 200 }
   validates :document,

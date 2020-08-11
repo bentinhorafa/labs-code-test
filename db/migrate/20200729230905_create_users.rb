@@ -7,7 +7,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.date :birthday, null: false
       t.string :gender, null: false, limit: 1
       t.string :password, null: false, limit: 8
-      t.string :token, null: false
+      t.string :token, null: false, limit: 100
     end
 
     add_index :users, :document, unique: true

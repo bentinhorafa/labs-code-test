@@ -41,3 +41,18 @@ RSpec/MessageSpies:
 
 RSpec/NestedGroups:
   Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
