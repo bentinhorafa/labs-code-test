@@ -1,8 +1,6 @@
 class AccountCreateService
-  class AccountCreatError < StandardError; end
-
-  BRANCH_RANGE = 0..9999
-  ACCOUNT_NUMBER_RANGE = 0..99999
+  BRANCH_RANGE = (0..9_999).freeze
+  ACCOUNT_NUMBER_RANGE = (0..99_999).freeze
 
   attr_reader :user
 
@@ -15,12 +13,6 @@ class AccountCreateService
   end
 
   def create
-    create_account
-  end
-
-  private
-
-  def create_account
     Account.create(
       branch: rand(BRANCH_RANGE).to_s.rjust(4, '0'),
       account_number: rand(ACCOUNT_NUMBER_RANGE).to_s.rjust(5, '0'),
