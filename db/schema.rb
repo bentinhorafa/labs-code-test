@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_07_182559) do
+ActiveRecord::Schema.define(version: 2020_08_11_114241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_transactions", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.integer "type", null: false
+    t.decimal "amount", null: false
+    t.index ["account_id"], name: "index_account_transactions_on_account_id"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "branch", limit: 4, null: false
@@ -38,5 +45,6 @@ ActiveRecord::Schema.define(version: 2020_08_07_182559) do
     t.index ["token"], name: "index_users_on_token", unique: true
   end
 
+  add_foreign_key "account_transactions", "accounts"
   add_foreign_key "accounts", "users"
 end

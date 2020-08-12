@@ -47,7 +47,7 @@ RSpec.describe UserCreateService do
         }
       end
 
-      it 'retorna usuário e conta não persistidos e seus respectivos erros' do
+      it 'não cria conta e retorna usuário não persistido e seus respectivos erros' do
         expect(user.account).to be_nil
         expect(user).not_to be_persisted
         expect(user.errors.full_messages).to include('Document is the wrong' \
