@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_11_114241) do
+ActiveRecord::Schema.define(version: 2020_08_19_013206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,9 @@ ActiveRecord::Schema.define(version: 2020_08_11_114241) do
     t.bigint "account_id", null: false
     t.integer "type", null: false
     t.decimal "amount", null: false
+    t.bigint "transfer_id"
     t.index ["account_id"], name: "index_account_transactions_on_account_id"
+    t.index ["transfer_id"], name: "index_account_transactions_on_transfer_id"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -31,6 +33,16 @@ ActiveRecord::Schema.define(version: 2020_08_11_114241) do
     t.bigint "user_id", null: false
     t.index ["branch", "account_number"], name: "index_accounts_on_branch_and_account_number", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "transfers", force: :cascade do |t|
+    t.integer "origin_id", null: false
+    t.integer "destiny_id", null: false
+    t.decimal "amount", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["destiny_id"], name: "index_transfers_on_destiny_id"
+    t.index ["origin_id"], name: "index_transfers_on_origin_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -46,5 +58,6 @@ ActiveRecord::Schema.define(version: 2020_08_11_114241) do
   end
 
   add_foreign_key "account_transactions", "accounts"
+  add_foreign_key "account_transactions", "transfers"
   add_foreign_key "accounts", "users"
 end
