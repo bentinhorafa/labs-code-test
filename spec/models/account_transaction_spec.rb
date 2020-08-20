@@ -6,6 +6,7 @@ RSpec.describe AccountTransaction, type: :model do
   describe 'validations' do
     describe 'association' do
       it { is_expected.to belong_to(:account) }
+      it { is_expected.to belong_to(:transfer).optional }
     end
 
     describe 'presence' do

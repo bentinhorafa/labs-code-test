@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_034333) do
+ActiveRecord::Schema.define(version: 2020_08_20_031540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(version: 2020_08_19_034333) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_account_transactions_on_account_id"
     t.index ["transfer_id"], name: "index_account_transactions_on_transfer_id"
+  end
+
+  create_table "account_withdraw_requests", force: :cascade do |t|
+    t.decimal "amount", null: false
+    t.string "cash_possibility"
+    t.bigint "account_id", null: false
+    t.bigint "account_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_account_withdraw_requests_on_account_id"
+    t.index ["account_transaction_id"], name: "index_account_withdraw_requests_on_account_transaction_id"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -65,5 +76,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_034333) do
 
   add_foreign_key "account_transactions", "accounts"
   add_foreign_key "account_transactions", "transfers"
+  add_foreign_key "account_withdraw_requests", "account_transactions"
+  add_foreign_key "account_withdraw_requests", "accounts"
   add_foreign_key "accounts", "users"
 end

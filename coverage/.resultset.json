@@ -226,12 +226,12 @@
         "lines": [
           1,
           1,
-          21,
-          21,
-          21,
-          21,
-          21,
-          21,
+          27,
+          27,
+          27,
+          27,
+          27,
+          27,
           null,
           1,
           6,
@@ -249,9 +249,20 @@
         "lines": [
           1,
           1,
-          4,
-          4,
-          4,
+          5,
+          5,
+          5,
+          null,
+          null
+        ]
+      },
+      "/home/bento/Documentos/Workspace/labs-code-test/spec/factories/account_withdraw_request.rb": {
+        "lines": [
+          1,
+          1,
+          6,
+          6,
+          6,
           null,
           null
         ]
@@ -271,13 +282,13 @@
         "lines": [
           1,
           1,
-          37,
-          37,
-          37,
-          37,
-          37,
-          37,
-          37,
+          43,
+          43,
+          43,
+          43,
+          43,
+          43,
+          43,
           null,
           1,
           6,
@@ -342,10 +353,11 @@
           1,
           null,
           1,
-          4,
+          5,
           null,
           1,
           1,
+          2,
           2,
           null,
           null,
@@ -367,6 +379,43 @@
           null,
           1,
           1,
+          null
+        ]
+      },
+      "/home/bento/Documentos/Workspace/labs-code-test/spec/models/account_withdraw_request_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          6,
+          null,
+          1,
+          1,
+          2,
+          2,
+          null,
+          null,
+          1,
+          2,
+          null,
+          null,
+          1,
+          2,
+          2,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/bento/Documentos/Workspace/labs-code-test/app/models/account_withdraw_request.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
           null
         ]
       },
@@ -654,6 +703,6 @@
         ]
       }
     },
-    "timestamp": 1597804774
+    "timestamp": 1597893487
   }
 }
