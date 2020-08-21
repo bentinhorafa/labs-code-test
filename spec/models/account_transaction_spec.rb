@@ -10,7 +10,7 @@ RSpec.describe AccountTransaction, type: :model do
     end
 
     describe 'presence' do
-      it { is_expected.to validate_presence_of(:type) }
+      it { is_expected.to validate_presence_of(:transaction_type) }
       it { is_expected.to validate_presence_of(:amount) }
     end
   end

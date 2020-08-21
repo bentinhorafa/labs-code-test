@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_20_031540) do
+ActiveRecord::Schema.define(version: 2020_08_21_030419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "account_transactions", force: :cascade do |t|
     t.bigint "account_id", null: false
-    t.integer "type", null: false
+    t.integer "transaction_type", null: false
     t.decimal "amount", null: false
     t.bigint "transfer_id"
     t.datetime "created_at", precision: 6, null: false

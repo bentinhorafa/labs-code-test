@@ -6,6 +6,7 @@ RSpec.describe Account, type: :model do
   describe 'validations' do
     describe 'association' do
       it { is_expected.to belong_to(:user) }
+      it { is_expected.to have_many(:account_transactions) }
     end
 
     describe 'presence' do

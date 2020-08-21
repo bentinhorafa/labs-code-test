@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
+  has_many :account_transactions, dependent: :nullify
 
   validates :branch,
             presence: true,

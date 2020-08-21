@@ -12,7 +12,6 @@ RSpec.describe AccountLimitUpdateService do
     }
   end
 
-  let(:user) { create(:user) }
   let(:account) { create(:account) }
 
   describe '#update' do
