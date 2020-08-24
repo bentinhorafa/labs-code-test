@@ -11,6 +11,7 @@ RSpec.describe AccountWithdrawRequest, type: :model do
 
     describe 'presence' do
       it { is_expected.to validate_presence_of(:amount) }
+      it { is_expected.to validate_presence_of(:cash_possibilities) }
     end
 
     describe 'numericality' do

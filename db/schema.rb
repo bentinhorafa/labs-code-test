@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_030419) do
+ActiveRecord::Schema.define(version: 2020_08_23_210013) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "account_transactions", force: :cascade do |t|
@@ -28,11 +29,11 @@ ActiveRecord::Schema.define(version: 2020_08_21_030419) do
 
   create_table "account_withdraw_requests", force: :cascade do |t|
     t.decimal "amount", null: false
-    t.string "cash_possibility"
     t.bigint "account_id", null: false
     t.bigint "account_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "cash_possibilities", null: false
     t.index ["account_id"], name: "index_account_withdraw_requests_on_account_id"
     t.index ["account_transaction_id"], name: "index_account_withdraw_requests_on_account_transaction_id"
   end

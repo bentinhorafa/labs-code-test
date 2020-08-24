@@ -12,8 +12,8 @@ class WithdrawPossibilitiesService
   def call
     possibilities = if amount >= 20
                       [
-                        cash_possibility(value: amount, attempt: true),
-                        cash_possibility(value: amount)
+                        cash_possibility(value: amount),
+                        cash_possibility(value: amount, attempt: true)
                       ]
                     else
                       [cash_possibility(value: amount)]
