@@ -7,6 +7,7 @@ RSpec.describe AccountTransaction, type: :model do
     describe 'association' do
       it { is_expected.to belong_to(:account) }
       it { is_expected.to belong_to(:transfer).optional }
+      it { is_expected.to have_one(:account_withdraw_request).optional }
     end
 
     describe 'presence' do
