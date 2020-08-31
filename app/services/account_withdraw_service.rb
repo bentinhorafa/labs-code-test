@@ -70,23 +70,4 @@ class AccountWithdrawService
 
     cashes.join('|')
   end
-
-  def normalized_possibilities(cash_possibilities)
-    possibilities = []
-
-    cash_possibilities.each do |possibility|
-      temp_array = []
-
-      possibility.split('-').each do |quantity_money|
-        quantity = quantity_money.split('x').first
-        money = quantity_money.split('x').last
-
-        temp_array << "#{quantity} nota(s) de #{money}"
-      end
-
-      possibilities << temp_array.join(', ')
-    end
-
-    possibilities
-  end
 end
