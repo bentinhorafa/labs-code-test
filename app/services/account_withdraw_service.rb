@@ -11,6 +11,9 @@ class AccountWithdrawService
   end
 
   def withdraw
+    return unless valid_amount?
+    return unless balance_support_debit?
+
     create_account_withdraw_request
   end
 
@@ -25,9 +28,6 @@ class AccountWithdrawService
   end
 
   def create_account_withdraw_request
-    return unless valid_amount?
-    return unless balance_support_debit?
-
     cash_possibilities = normalized_cash(
       WithdrawPossibilitiesService.new(normalized_amount).call
     )
@@ -40,7 +40,7 @@ class AccountWithdrawService
 
     account_withdraw_request.save if account_withdraw_request.valid?
 
-    build_response(account_withdraw_request)
+    account_withdraw_request
   end
 
   def valid_amount?
@@ -69,17 +69,6 @@ class AccountWithdrawService
     end
 
     cashes.join('|')
-  end
-
-  def build_response(account_withdraw_request)
-    cash_possibilities = account_withdraw_request.cash_possibilities.split('|')
-    response_possibilities = normalized_possibilities(cash_possibilities)
-
-    {
-      id: account_withdraw_request.id,
-      amount: normalized_amount,
-      cash_possibilities: response_possibilities
-    }
   end
 
   def normalized_possibilities(cash_possibilities)
