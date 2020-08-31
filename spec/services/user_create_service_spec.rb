@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe UserCreateService do
   subject do
-    described_class.new(user_params)
+    described_class.new(**user_params)
   end
 
   let(:user_params) do
