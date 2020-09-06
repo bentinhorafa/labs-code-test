@@ -21,7 +21,7 @@ class WithdrawConfirmService
   def account_withdraw_request
     id = account_withdraw_request_id
     @account_withdraw_request ||= AccountWithdrawRequest.find(id)
-  rescue
+  rescue StandardError
     raise WithdrawRequestIdNotFound, "Withdraw Request ##{id} not found!"
   end
 
