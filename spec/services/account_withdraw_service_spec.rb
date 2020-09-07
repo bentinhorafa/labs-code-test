@@ -5,12 +5,6 @@ RSpec.describe AccountWithdrawService do
     context 'quando o valor é maior ou igual a 20' do
       context 'quando o valor é par' do
         context 'quando o usuário possui o valor em conta' do
-          # PENDING
-          # headers: {
-          #   'Content-Type' => 'application/json',
-          #   'Accept' => 'application/json',
-          #   'Authorization' => user.token
-          # }
           it 'cria uma requisição de saque' do
             account = create(:account, limit: 1500.0, balance: 1500.0)
             user = account.user
