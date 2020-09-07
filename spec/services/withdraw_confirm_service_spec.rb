@@ -49,15 +49,7 @@ RSpec.describe WithdrawConfirmService do
 
   describe '.confirm' do
     it 'inicia o serviço, executa e retorna o resultado de #confirm' do
-      account = create(:account, limit: 1500.0, balance: 1500.0)
-      user = account.user
-      withdraw_params = { token: user.token, amount: 250.0 }
-      account_withdraw_request = AccountWithdrawService.new(**withdraw_params).withdraw
-
-      confirm_params = {
-        account_withdraw_request_id: account_withdraw_request.id,
-        possibility: 1
-      }
+      confirm_params = { account_withdraw_request_id: 3, possibility: 1 }
 
       service = instance_double('WithdrawConfirmService')
       account_transaction = instance_double('AccountTransaction')
