@@ -55,7 +55,7 @@ class AccountDepositService
 
   def create_deposit
     ActiveRecord::Base.transaction do
-      account_transaction = AccountTransaction.new(
+      account_transaction = AccountTransaction.create(
         account: account,
         amount: normalized_amount
       )
@@ -64,8 +64,7 @@ class AccountDepositService
 
       account.update(balance: balance + normalized_amount) if account_transaction.valid?
 
-      account_transaction.save
-      account
+      account_transaction
     end
   end
 end
