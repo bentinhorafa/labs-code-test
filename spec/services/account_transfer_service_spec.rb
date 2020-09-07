@@ -122,14 +122,10 @@ RSpec.describe AccountTransferService do
 
   describe '.transfer' do
     it 'inicia o serviço, executa e retorna o resultado de #transfer' do
-      origin_account = create(:account, limit: 1500.0, balance: 1500.0)
-      destiny_account =
-        create(:account, :another_account, limit: 1200.0, balance: 600.0)
-
       transfer_params = {
-        token: origin_account.user.token,
-        destiny_branch: destiny_account.branch,
-        destiny_account_number: destiny_account.account_number,
+        token: 'DuMMytOkeN',
+        destiny_branch: '0123',
+        destiny_account_number: '45678',
         amount: 500
       }
 
