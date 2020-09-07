@@ -40,9 +40,7 @@ RSpec.describe AccountWithdrawService do
 
   describe '.withdraw' do
     it 'inicia o serviço, executa e retorna o resultado de #withdraw' do
-      account = create(:account, limit: 1500.0, balance: 1500.0)
-      user = account.user
-      withdraw_params = { token: user.token, amount: 250.0 }
+      withdraw_params = { token: 'DuMMytOkeN', amount: 250.0 }
 
       service = instance_double('AccountWithdrawService')
       account_withdraw_request = instance_double('AccountWithdrawRequest')
