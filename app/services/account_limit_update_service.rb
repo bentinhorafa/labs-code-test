@@ -1,11 +1,11 @@
 class AccountLimitUpdateService
   TEN_MINUTES = 600
 
-  attr_reader :token, :amount
+  attr_reader :token, :limit
 
-  def initialize(update_limit_params)
-    @token = update_limit_params[:token]
-    @amount = update_limit_params[:amount]
+  def initialize(token:, limit:)
+    @token = token
+    @limit = limit
   end
 
   def self.update(...)
@@ -33,7 +33,7 @@ class AccountLimitUpdateService
   end
 
   def update_allowed?
-    time_enough? && balance_less_or_equal_than_amount?
+    time_enough? && balance_less_or_equal_than_limit?
   end
 
   def time_enough?
@@ -41,11 +41,11 @@ class AccountLimitUpdateService
     past_time >= TEN_MINUTES
   end
 
-  def balance_less_or_equal_than_amount?
-    account.balance <= amount
+  def balance_less_or_equal_than_limit?
+    account.balance <= limit
   end
 
   def update_limit
-    account.update(limit: amount, last_limit_update: Time.zone.now)
+    account.update(limit: limit, last_limit_update: Time.zone.now)
   end
 end
