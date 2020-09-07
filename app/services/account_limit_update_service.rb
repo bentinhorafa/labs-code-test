@@ -47,5 +47,7 @@ class AccountLimitUpdateService
 
   def update_limit
     account.update(limit: limit, last_limit_update: Time.zone.now)
+
+    account
   end
 end
