@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AccountCreateService do
-  let(:user) { create(:user) }
-
   describe '#create' do
-    let(:account) { described_class.create(user) }
-
     it 'cria uma conta viculada ao usuário informado' do
+      user = create(:user)
+      account = described_class.create(user)
+
       expect(account).to be_persisted
       expect(account.branch.length).to eq(4)
       expect(account.account_number.length).to eq(5)
