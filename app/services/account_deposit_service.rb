@@ -1,9 +1,9 @@
 class AccountDepositService
   attr_reader :token, :amount
 
-  def initialize(deposit_params)
-    @token = deposit_params[:token]
-    @amount = deposit_params[:amount]
+  def initialize(token:, amount:)
+    @token = token
+    @amount = amount
   end
 
   def self.deposit(...)
