@@ -1,10 +1,11 @@
 class WithdrawConfirmService
   class WithdrawRequestIdNotFound < StandardError; end
 
-  attr_reader :account_withdraw_request_id, :possibility
+  attr_reader :token, :account_withdraw_request, :possibility
 
-  def initialize(account_withdraw_request_id:, possibility:)
-    @account_withdraw_request_id = account_withdraw_request_id
+  def initialize(token:, account_withdraw_request:, possibility:)
+    @token = token
+    @account_withdraw_request = account_withdraw_request
     @possibility = possibility
   end
 
@@ -13,16 +14,15 @@ class WithdrawConfirmService
   end
 
   def confirm
+    return unless same_user?
+
     create_withdraw_transaction
   end
 
   private
 
-  def account_withdraw_request
-    id = account_withdraw_request_id
-    @account_withdraw_request ||= AccountWithdrawRequest.find(id)
-  rescue StandardError
-    raise WithdrawRequestIdNotFound, "Withdraw Request ##{id} not found!"
+  def user
+    @user ||= User.find_by(token: token)
   end
 
   def account
@@ -53,5 +53,9 @@ class WithdrawConfirmService
 
   def update_balance
     account.update(balance: account.balance - account_withdraw_request.amount)
+  end
+
+  def same_user?
+    user == account.user
   end
 end

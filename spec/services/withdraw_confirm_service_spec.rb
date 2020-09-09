@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe WithdrawConfirmService do
   describe '#confirm' do
-    context 'quando o id é encontrado' do
+    context 'quando o usuário da requisição é igual ao da confirmação' do
       context 'quando a opção de saque é informada' do
         it 'cria uma account_transaction de saque' do
           account = create(:account, limit: 1500.0, balance: 1500.0)
@@ -12,7 +12,8 @@ RSpec.describe WithdrawConfirmService do
           account_withdraw_request = AccountWithdrawService.new(**withdraw_params).withdraw
 
           withdraw_transaction = described_class.new(
-            account_withdraw_request_id: account_withdraw_request.id,
+            token: user.token,
+            account_withdraw_request: account_withdraw_request,
             possibility: 1
           ).confirm
 
@@ -26,8 +27,8 @@ RSpec.describe WithdrawConfirmService do
       end
     end
 
-    context 'quando o id NÃO é encontrado' do
-      it 'exibe mensagem de erro de transação não encontrada' do
+    context 'quando o usuário da requisição é DIFERENTE ao da confirmação' do
+      it 'NÃO cria uma account_transaction de saque' do
         account = create(:account, limit: 1500.0, balance: 1500.0)
         user = account.user
 
@@ -36,23 +37,25 @@ RSpec.describe WithdrawConfirmService do
 
         expect do
           described_class.new(
-            account_withdraw_request_id: account_withdraw_request.id - 1,
+            token: 'tHIsISaNotHErTokEN',
+            account_withdraw_request: account_withdraw_request,
             possibility: 1
           ).confirm
-        end.to raise_error(
-          WithdrawConfirmService::WithdrawRequestIdNotFound,
-          "Withdraw Request ##{account_withdraw_request.id - 1} not found!"
-        )
+        end.not_to change { AccountTransaction.all.count }
       end
     end
   end
 
   describe '.confirm' do
     it 'inicia o serviço, executa e retorna o resultado de #confirm' do
-      confirm_params = { account_withdraw_request_id: 3, possibility: 1 }
-
       service = instance_double('WithdrawConfirmService')
+      account_withdraw_request = instance_double('AccountWithdrawRequest')
       account_transaction = instance_double('AccountTransaction')
+      confirm_params = {
+        token: 'DuMMytOkeN',
+        account_withdraw_request: account_withdraw_request,
+        possibility: 1
+      }
 
       expect(described_class).to receive(:new).with(confirm_params).once.and_return(service)
       expect(service).to receive(:confirm).and_return(account_transaction)
