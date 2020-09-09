@@ -104,6 +104,62 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
+  describe 'POST /api/v1/accounts/withdraw_request' do
+    context 'quando é uma transação válida' do
+      it 'retorna status code 201' do
+        account = create(:account, limit: 1500.0, balance: 1500.0)
+        withdraw_params = { amount: 250.0 }
+        token = account.user.token
+
+        withdraw_request(token, withdraw_params)
+
+        expect(response.status).to eq(201)
+      end
+
+      it 'renderiza mensagem com os valores da transação' do
+        account = create(:account, limit: 1500.0, balance: 1500.0)
+        withdraw_params = { amount: 250.0 }
+        token = account.user.token
+
+        withdraw_request(token, withdraw_params)
+
+        message = 'Responda "1" para a opção 1 e "2" para a opção 2'
+        possibilities = [
+          '5 nota(s) de 50',
+          '4 nota(s) de 50, 2 nota(s) de 20, 5 nota(s) de 2'
+        ]
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+        expect(JSON.parse(response.body)['amount']).to eq(250.0)
+        expect(JSON.parse(response.body)['cash_possibilities']).to eq(possibilities)
+      end
+    end
+
+    context 'quando é uma transação inválida' do
+      it 'retorna status code 403' do
+        account = create(:account, limit: 1500.0, balance: 1500.0)
+        withdraw_params = { amount: 231.0 }
+        token = account.user.token
+
+        withdraw_request(token, withdraw_params)
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'renderiza mensagem de erro' do
+        account = create(:account, limit: 1500.0, balance: 1500.0)
+        withdraw_params = { amount: 231.0 }
+        token = account.user.token
+
+        withdraw_request(token, withdraw_params)
+
+        message = 'Requisição de saque não autorizada!'
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+      end
+    end
+  end
+
   def update_limit_request(update_limit_params)
     request.headers['Content-Type'] = 'application/json'
     request.headers['Accept'] = 'application/json'
@@ -119,5 +175,14 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
     post :deposit,
          params: deposit_params
+  end
+
+  def withdraw_request(token, withdraw_params)
+    request.headers['Content-Type'] = 'application/json'
+    request.headers['Accept'] = 'application/json'
+    request.headers['Authorization'] = token
+
+    post :withdraw,
+         params: withdraw_params
   end
 end

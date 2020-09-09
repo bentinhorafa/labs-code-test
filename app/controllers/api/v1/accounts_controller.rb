@@ -42,13 +42,61 @@ module Api
         end
       end
 
+      def withdraw
+        withdraw_request = AccountWithdrawService.new(
+          token: request.headers['Authorization'],
+          amount: withdraw_params[:amount]
+        ).withdraw
+
+        if withdraw_request
+          cash_possibilities = withdraw_request.cash_possibilities.split('|')
+          possibilities = normalized_possibilities(cash_possibilities)
+
+          render(
+            json: {
+              message: 'Responda "1" para a opção 1 e "2" para a opção 2',
+              id: withdraw_request.id,
+              amount: withdraw_request.amount.to_i,
+              cash_possibilities: possibilities
+            },
+            status: :created
+          )
+        else
+          render json: { message: 'Requisição de saque não autorizada!' },
+                 status: :forbidden
+        end
+      end
+
       private
+
+      def normalized_possibilities(cash_possibilities)
+        possibilities = []
+
+        cash_possibilities.each do |possibility|
+          temp_array = []
+
+          possibility.split('-').each do |quantity_money|
+            quantity = quantity_money.split('x').first
+            money = quantity_money.split('x').last
+
+            temp_array << "#{quantity} nota(s) de #{money}"
+          end
+
+          possibilities << temp_array.join(', ')
+        end
+
+        possibilities
+      end
 
       def limit_params
         params.permit(:token, :limit)
       end
 
       def deposit_params
+        params.permit(:amount)
+      end
+
+      def withdraw_params
         params.permit(:amount)
       end
     end
