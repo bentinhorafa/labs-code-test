@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
       put '/accounts/:token/update_limit', to: 'accounts#update', as: 'update_limit'
       post '/accounts/deposit', to: 'accounts#deposit', as: 'deposit'
+      post '/accounts/transfer', to: 'accounts#transfer', as: 'transfer'
 
       post '/accounts/withdraw_request', to: 'withdraws#withdraw', as: 'withdraw_request'
       post '/accounts/withdraw_confirm', to: 'withdraws#confirm', as: 'withdraw_confirm'

@@ -104,6 +104,83 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
+  describe 'POST /api/v1/accounts/transfer' do
+    context 'quando é uma transação válida' do
+      it 'retorna status code 201' do
+        origin_account = create(:account, limit: 1500.0, balance: 1500.0)
+        destiny_account =
+          create(:account, :another_account, limit: 1200.0, balance: 600.0)
+        token = origin_account.user.token
+
+        transfer_params = {
+          destiny_branch: destiny_account.branch,
+          destiny_account_number: destiny_account.account_number,
+          amount: 500.0
+        }
+
+        transfer_request(token, transfer_params)
+
+        expect(response.status).to eq(201)
+      end
+
+      it 'renderiza mensagem com os valores da transação' do
+        origin_account = create(:account, limit: 1500.0, balance: 1500.0)
+        destiny_account =
+          create(:account, :another_account, limit: 1200.0, balance: 600.0)
+        token = origin_account.user.token
+
+        transfer_params = {
+          destiny_branch: destiny_account.branch,
+          destiny_account_number: destiny_account.account_number,
+          amount: 500.0
+        }
+
+        transfer_request(token, transfer_params)
+
+        message = 'Transferência realizada com sucesso!'
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+        expect(JSON.parse(response.body)['amount']).to eq(500.0)
+        expect(JSON.parse(response.body)['balance']).to eq(1000.0)
+        expect(JSON.parse(response.body)['transfer_to']).to eq(destiny_account.user.full_name)
+      end
+    end
+
+    context 'quando é uma transação inválida' do
+      it 'retorna status code 403' do
+        origin_account = create(:account, limit: 1500.0, balance: 1500.0)
+        token = origin_account.user.token
+
+        transfer_params = {
+          destiny_branch: '9999',
+          destiny_account_number: '99999',
+          amount: 500.0
+        }
+
+        transfer_request(token, transfer_params)
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'renderiza mensagem de erro' do
+        origin_account = create(:account, limit: 1500.0, balance: 1500.0)
+        token = origin_account.user.token
+
+        transfer_params = {
+          destiny_branch: '9999',
+          destiny_account_number: '99999',
+          amount: 500.0
+        }
+
+        transfer_request(token, transfer_params)
+
+        message = 'Transferência não autorizada!'
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+      end
+    end
+  end
+
   def update_limit_request(update_limit_params)
     request.headers['Content-Type'] = 'application/json'
     request.headers['Accept'] = 'application/json'
@@ -119,5 +196,14 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
     post :deposit,
          params: deposit_params
+  end
+
+  def transfer_request(token, transfer_params)
+    request.headers['Content-Type'] = 'application/json'
+    request.headers['Accept'] = 'application/json'
+    request.headers['Authorization'] = token
+
+    post :transfer,
+         params: transfer_params
   end
 end

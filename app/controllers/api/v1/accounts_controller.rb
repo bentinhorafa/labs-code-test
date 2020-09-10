@@ -42,6 +42,32 @@ module Api
         end
       end
 
+      def transfer
+        debit_transaction, credit_transaction = AccountTransferService.new(
+          token: request.headers['Authorization'],
+          destiny_branch: transfer_params[:destiny_branch],
+          destiny_account_number: transfer_params[:destiny_account_number],
+          amount: transfer_params[:amount]
+        ).transfer
+
+        if debit_transaction && credit_transaction
+          origin_balance = debit_transaction.account.reload.balance.to_f
+
+          render(
+            json: {
+              message: 'Transferência realizada com sucesso!',
+              amount: debit_transaction.amount.to_i.abs,
+              balance: origin_balance,
+              transfer_to: credit_transaction.account.user.full_name
+            },
+            status: :created
+          )
+        else
+          render json: { message: 'Transferência não autorizada!' },
+                 status: :forbidden
+        end
+      end
+
       private
 
       def limit_params
@@ -50,6 +76,10 @@ module Api
 
       def deposit_params
         params.permit(:amount)
+      end
+
+      def transfer_params
+        params.permit(:destiny_branch, :destiny_account_number, :amount)
       end
     end
   end
