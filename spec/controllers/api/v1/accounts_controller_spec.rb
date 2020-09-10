@@ -181,6 +181,94 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
+  describe 'GET /api/v1/accounts/statement' do
+    context 'quando é uma requisição válida' do
+      it 'retorna status code 200' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = account.user.token
+
+        create_list(
+          :account_transaction, 2, :withdraw,
+          account: account, amount: 80.0, created_at: (Time.zone.today - 7.days)
+        )
+
+        create_list(
+          :account_transaction, 3, :withdraw, account: account, amount: 100.0
+        )
+
+        statement_request(token)
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'renderiza mensagem com os dados do extrato' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = account.user.token
+
+        create_list(
+          :account_transaction, 2, :withdraw,
+          account: account, amount: 80.0, created_at: (Time.zone.today - 7.days)
+        )
+
+        create_list(
+          :account_transaction, 3, :withdraw, account: account, amount: 100.0
+        )
+
+        statement_request(token)
+
+        message = 'Saldo do(s) último(s) 7 dia(s)'
+        statement = [
+          '10/09/2020 | Withdraw | R$ 100.0',
+          '10/09/2020 | Withdraw | R$ 100.0',
+          '10/09/2020 | Withdraw | R$ 100.0'
+        ]
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+        expect(JSON.parse(response.body)['statement']).to eq(statement)
+      end
+    end
+
+    context 'quando é uma requisição inválida' do
+      it 'retorna status code 404' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = 'WrONgToKEn'
+
+        create_list(
+          :account_transaction, 2, :withdraw,
+          account: account, amount: 80.0, created_at: (Time.zone.today - 7.days)
+        )
+
+        create_list(
+          :account_transaction, 3, :withdraw, account: account, amount: 100.0
+        )
+
+        statement_request(token)
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'renderiza mensagem de erro' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = 'WrONgToKEn'
+
+        create_list(
+          :account_transaction, 2, :withdraw,
+          account: account, amount: 80.0, created_at: (Time.zone.today - 7.days)
+        )
+
+        create_list(
+          :account_transaction, 3, :withdraw, account: account, amount: 100.0
+        )
+
+        statement_request(token)
+
+        message = 'Não foi possível verificar seu extrato.'
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+      end
+    end
+  end
+
   def update_limit_request(update_limit_params)
     request.headers['Content-Type'] = 'application/json'
     request.headers['Accept'] = 'application/json'
@@ -205,5 +293,14 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
     post :transfer,
          params: transfer_params
+  end
+
+  def statement_request(token, statement_params = { days: 7 })
+    request.headers['Content-Type'] = 'application/json'
+    request.headers['Accept'] = 'application/json'
+    request.headers['Authorization'] = token
+
+    get :index,
+        params: statement_params
   end
 end

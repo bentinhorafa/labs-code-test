@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       post '/accounts/deposit', to: 'accounts#deposit', as: 'deposit'
       post '/accounts/transfer', to: 'accounts#transfer', as: 'transfer'
 
+      get '/accounts/statement/:days', to: 'accounts#index'
+
       post '/accounts/withdraw_request', to: 'withdraws#withdraw', as: 'withdraw_request'
       post '/accounts/withdraw_confirm', to: 'withdraws#confirm', as: 'withdraw_confirm'
     end

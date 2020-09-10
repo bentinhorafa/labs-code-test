@@ -68,7 +68,41 @@ module Api
         end
       end
 
+      def index
+        statement = AccountStatementService.new(
+          token: request.headers['Authorization'],
+          days: statement_params[:days]
+        ).statement
+
+        if statement
+          days = statement_params[:days]
+
+          render(
+            json: {
+              message: "Saldo do(s) último(s) #{days} dia(s)",
+              statement: normalized_statement(statement)
+            },
+            status: :ok
+          )
+        else
+          render json: { message: 'Não foi possível verificar seu extrato.' },
+                 status: :not_found
+        end
+      end
+
       private
+
+      def normalized_statement(statement)
+        transactions_message = []
+
+        statement.each do |s|
+          transactions_message << "#{s.created_at.strftime('%d/%m/%Y')} | " \
+          "#{s.transaction_type.capitalize} | " \
+          "R$ #{s.amount}"
+        end
+
+        transactions_message
+      end
 
       def limit_params
         params.permit(:token, :limit)
@@ -80,6 +114,10 @@ module Api
 
       def transfer_params
         params.permit(:destiny_branch, :destiny_account_number, :amount)
+      end
+
+      def statement_params
+        params.permit(:days)
       end
     end
   end
