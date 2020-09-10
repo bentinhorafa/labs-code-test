@@ -20,7 +20,7 @@ RSpec.describe AccountStatementService do
         )
 
         statement_first_day = (Time.zone.today - 6.days).beginning_of_day
-        statement = described_class.new(account.user.token).statement
+        statement = described_class.new(token: account.user.token).statement
 
         expect(statement.first.created_at).to be >= statement_first_day
         expect(statement.last.created_at).to be <= Time.zone.today.end_of_day
@@ -48,7 +48,7 @@ RSpec.describe AccountStatementService do
           )
 
           statement_first_day = (Time.zone.today - (days - 1).days).beginning_of_day
-          statement = described_class.new(account.user.token, days).statement
+          statement = described_class.new(token: account.user.token, days: days).statement
 
           expect(statement.first.created_at).to be >= statement_first_day
           expect(statement.last.created_at).to be <= Time.zone.today.end_of_day
@@ -70,7 +70,7 @@ RSpec.describe AccountStatementService do
           )
 
           statement_first_day = Time.zone.today.beginning_of_day
-          statement = described_class.new(account.user.token, days).statement
+          statement = described_class.new(token: account.user.token, days: days).statement
 
           expect(statement.first.created_at).to be >= statement_first_day
           expect(statement.last.created_at).to be <= Time.zone.today.end_of_day
@@ -86,7 +86,7 @@ RSpec.describe AccountStatementService do
             :account_transaction, 3, :deposit, account: account, amount: 200.0
           )
 
-          statement = described_class.new(account.user.token, days).statement
+          statement = described_class.new(token: account.user.token, days: days).statement
 
           expect(statement).to be_nil
         end
@@ -102,9 +102,13 @@ RSpec.describe AccountStatementService do
       service = instance_double('AccountStatementService')
       account_transaction = instance_double('AccountTransaction')
 
-      expect(described_class).to receive(:new).with(token, days).once.and_return(service)
+      expect(described_class).to receive(:new).with(
+        token: token, days: days
+      ).once.and_return(service)
       expect(service).to receive(:statement).and_return(account_transaction)
-      expect(described_class.statement(token, days)).to eq(account_transaction)
+      expect(described_class.statement(
+        token: token, days: days
+      )).to eq(account_transaction)
     end
   end
 end

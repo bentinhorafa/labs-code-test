@@ -1,7 +1,7 @@
 class AccountStatementService
   attr_reader :token, :days
 
-  def initialize(token, days = 7)
+  def initialize(token:, days: 7)
     @token = token
     @days = days.to_i
   end
