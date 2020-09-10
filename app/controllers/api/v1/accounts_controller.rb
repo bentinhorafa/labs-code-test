@@ -67,6 +67,36 @@ module Api
         end
       end
 
+      def confirm
+        withdraw_id = withdraw_confirm_params[:account_withdraw_request_id]
+        account_withdraw_request = AccountWithdrawRequest.where(id: withdraw_id).last
+
+        if account_withdraw_request.nil?
+          return render(json: { message: 'Requisição de saque não encontrada!' },
+                        status: :not_found)
+        end
+
+        withdraw_transaction = WithdrawConfirmService.new(
+          token: request.headers['Authorization'],
+          account_withdraw_request: account_withdraw_request,
+          possibility: withdraw_confirm_params[:possibility]
+        ).confirm
+
+        if withdraw_transaction
+          render(
+            json: {
+              message: 'Saque realizado com sucesso!',
+              amount: withdraw_transaction.amount.to_i,
+              balance: withdraw_transaction.account.balance.to_f
+            },
+            status: :created
+          )
+        else
+          render json: { message: 'Saque não autorizado!' },
+                 status: :forbidden
+        end
+      end
+
       private
 
       def normalized_possibilities(cash_possibilities)
@@ -98,6 +128,10 @@ module Api
 
       def withdraw_params
         params.permit(:amount)
+      end
+
+      def withdraw_confirm_params
+        params.permit(:account_withdraw_request_id, :possibility)
       end
     end
   end
