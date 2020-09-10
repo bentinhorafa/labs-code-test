@@ -37,7 +37,7 @@ class AccountTransferService
 
   def create_transactions
     ActiveRecord::Base.transaction do
-      AccountTransaction.create(
+      debit_transaction = AccountTransaction.create(
         account: origin_account,
         amount: -transfer_amount,
         transaction_type: 'transfer'
@@ -45,13 +45,15 @@ class AccountTransferService
 
       update_balance(origin_account, -transfer_amount)
 
-      AccountTransaction.create(
+      credit_transaction = AccountTransaction.create(
         account: destiny_account,
         amount: transfer_amount,
         transaction_type: 'transfer'
       )
 
       update_balance(destiny_account, transfer_amount)
+
+      [debit_transaction, credit_transaction]
     end
   end
 

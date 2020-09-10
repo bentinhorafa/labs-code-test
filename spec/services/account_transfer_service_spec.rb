@@ -130,11 +130,14 @@ RSpec.describe AccountTransferService do
       }
 
       service = instance_double('AccountTransferService')
-      account_transaction = instance_double('AccountTransaction')
+      debit_transaction = instance_double('AccountTransaction')
+      credit_transaction = instance_double('AccountTransaction')
 
       expect(described_class).to receive(:new).with(transfer_params).once.and_return(service)
-      expect(service).to receive(:transfer).and_return(account_transaction)
-      expect(described_class.transfer(transfer_params)).to eq(account_transaction)
+      expect(service).to receive(:transfer).and_return([debit_transaction, credit_transaction])
+      expect(described_class.transfer(transfer_params)).to eq(
+        [debit_transaction, credit_transaction]
+      )
     end
   end
 end
