@@ -106,9 +106,9 @@ RSpec.describe AccountStatementService do
         token: token, days: days
       ).once.and_return(service)
       expect(service).to receive(:statement).and_return(account_transaction)
-      expect(described_class.statement(
-        token: token, days: days
-      )).to eq(account_transaction)
+      expect(
+        described_class.statement(token: token, days: days)
+      ).to eq(account_transaction)
     end
   end
 end

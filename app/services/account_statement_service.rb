@@ -12,14 +12,19 @@ class AccountStatementService
 
   def statement
     return unless days.between?(1, 90)
+    return unless user
 
     transactions_by_period
   end
 
   private
 
+  def user
+    @user ||= User.find_by(token: token)
+  end
+
   def account
-    @account ||= User.find_by(token: token).account
+    @account ||= user.account
   end
 
   def transactions_by_period
