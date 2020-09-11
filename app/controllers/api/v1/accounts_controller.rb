@@ -90,6 +90,18 @@ module Api
         end
       end
 
+      def balance
+        token = request.headers['Authorization']
+        user = User.find_by(token: token)
+
+        if user
+          render json: { balance: user.account.balance.to_f }, status: :ok
+        else
+          render json: { message: 'Erro. Contate o administrador.' },
+                 status: :forbidden
+        end
+      end
+
       private
 
       def normalized_statement(statement)

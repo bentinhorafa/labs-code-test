@@ -210,7 +210,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
           account: account, amount: 80.0, created_at: (Time.zone.today - 7.days)
         )
 
-        create_list(
+        transactions = create_list(
           :account_transaction, 3, :withdraw, account: account, amount: 100.0
         )
 
@@ -218,9 +218,9 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
         message = 'Saldo do(s) último(s) 7 dia(s)'
         statement = [
-          '10/09/2020 | Withdraw | R$ 100.0',
-          '10/09/2020 | Withdraw | R$ 100.0',
-          '10/09/2020 | Withdraw | R$ 100.0'
+          "#{formatted_date(transactions.first)} | Withdraw | R$ 100.0",
+          "#{formatted_date(transactions.second)} | Withdraw | R$ 100.0",
+          "#{formatted_date(transactions.last)} | Withdraw | R$ 100.0"
         ]
 
         expect(JSON.parse(response.body)['message']).to eq(message)
@@ -269,6 +269,54 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
+  describe 'GET /api/v1/accounts/balance' do
+    context 'quando o usuário é encontrado' do
+      it 'retorna status code 200' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = account.user.token
+
+        balance_request(token)
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'renderiza mensagem com os dados do extrato' do
+        account = create(:account, limit: 1000.0, balance: 1800.0)
+        token = account.user.token
+
+        balance_request(token)
+
+        expect(JSON.parse(response.body)['balance']).to eq(1800.0)
+      end
+    end
+
+    context 'quando o usuário não é encontrado' do
+      it 'retorna status code 403' do
+        create(:account, limit: 1000.0, balance: 1800.0)
+        token = 'WrONgToKEn'
+
+        balance_request(token)
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'renderiza mensagem de erro' do
+        create(:account, limit: 1000.0, balance: 1800.0)
+        token = 'WrONgToKEn'
+
+        balance_request(token)
+
+        message = 'Erro. Contate o administrador.'
+
+        expect(JSON.parse(response.body)['message']).to eq(message)
+      end
+    end
+  end
+
+  def formatted_date(transaction)
+    transaction.created_at.strftime('%d/%m/%Y')
+  end
+
   def update_limit_request(update_limit_params)
     request.headers['Content-Type'] = 'application/json'
     request.headers['Accept'] = 'application/json'
@@ -302,5 +350,13 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
     get :index,
         params: statement_params
+  end
+
+  def balance_request(token)
+    request.headers['Content-Type'] = 'application/json'
+    request.headers['Accept'] = 'application/json'
+    request.headers['Authorization'] = token
+
+    get :balance
   end
 end
