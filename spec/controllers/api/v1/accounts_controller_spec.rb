@@ -6,9 +6,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       it 'retorna status code 202' do
         past_time = Time.zone.now - 600
         account = create(:account, last_limit_update: past_time)
-        update_limit_params = { token: account.user.token, limit: 2500.0 }
+        token = account.user.token
+        update_limit_params = { limit: 2500.0 }
 
-        update_limit_request(update_limit_params)
+        update_limit_request(token, update_limit_params)
 
         expect(response.status).to eq(202)
       end
@@ -16,9 +17,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       it 'renderiza mensagem com os dados da conta' do
         past_time = Time.zone.now - 600
         account = create(:account, last_limit_update: past_time)
-        update_limit_params = { token: account.user.token, limit: 2500.0 }
+        token = account.user.token
+        update_limit_params = { limit: 2500.0 }
 
-        update_limit_request(update_limit_params)
+        update_limit_request(token, update_limit_params)
 
         message = 'Limite atualizado com sucesso!'
 
@@ -31,9 +33,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       it 'retorna status code 403' do
         past_time = Time.zone.now - 500
         account = create(:account, last_limit_update: past_time)
-        update_limit_params = { token: account.user.token, limit: 2500.0 }
+        token = account.user.token
+        update_limit_params = { limit: 2500.0 }
 
-        update_limit_request(update_limit_params)
+        update_limit_request(token, update_limit_params)
 
         expect(response.status).to eq(403)
       end
@@ -41,9 +44,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       it 'renderiza mensagem de erro' do
         past_time = Time.zone.now - 500
         account = create(:account, last_limit_update: past_time)
-        update_limit_params = { token: account.user.token, limit: 2500.0 }
+        token = account.user.token
+        update_limit_params = { limit: 2500.0 }
 
-        update_limit_request(update_limit_params)
+        update_limit_request(token, update_limit_params)
 
         message = 'Não autorizado!'
 
@@ -317,9 +321,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     transaction.created_at.strftime('%d/%m/%Y')
   end
 
-  def update_limit_request(update_limit_params)
+  def update_limit_request(token, update_limit_params)
     request.headers['Content-Type'] = 'application/json'
     request.headers['Accept'] = 'application/json'
+    request.headers['Authorization'] = token
 
     put :update,
         params: update_limit_params

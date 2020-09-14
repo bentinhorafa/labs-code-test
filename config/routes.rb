@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace 'v1' do
       resources :users, only: [:create]
 
-      put '/accounts/:token/update_limit', to: 'accounts#update', as: 'update_limit'
+      put '/accounts/update_limit', to: 'accounts#update', as: 'update_limit'
 
       post '/accounts/deposit', to: 'accounts#deposit', as: 'deposit'
       post '/accounts/transfer', to: 'accounts#transfer', as: 'transfer'

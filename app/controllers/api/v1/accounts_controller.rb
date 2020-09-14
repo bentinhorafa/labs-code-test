@@ -3,7 +3,7 @@ module Api
     class AccountsController < ApplicationController
       def update
         account = AccountLimitUpdateService.new(
-          token: limit_params[:token],
+          token: request.headers['Authorization'],
           limit: limit_params[:limit]
         ).update
 
@@ -117,7 +117,7 @@ module Api
       end
 
       def limit_params
-        params.permit(:token, :limit)
+        params.permit(:limit)
       end
 
       def deposit_params

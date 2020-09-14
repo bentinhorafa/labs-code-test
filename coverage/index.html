@@ -14,7 +14,7 @@
       <img src="./assets/0.12.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2020-09-10T23:12:58-03:00">2020-09-10T23:12:58-03:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2020-09-14T01:07:55-03:00">2020-09-14T01:07:55-03:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -77,7 +77,7 @@
             <td class="cell--number">45</td>
             <td class="cell--number">45</td>
             <td class="cell--number">0</td>
-            <td class="cell--number">2.76</td>
+            <td class="cell--number">2.67</td>
             
           </tr>
         
@@ -758,7 +758,7 @@
 
             
 
-            <code class="ruby">          token: limit_params[:token],</code>
+            <code class="ruby">          token: request.headers[&#39;Authorization&#39;],</code>
           </li>
         </div>
       
@@ -2006,13 +2006,13 @@
         </div>
       
         <div>
-          <li class="covered" data-hits="8" data-linenumber="120">
-            <span class="hits">8</span>
+          <li class="covered" data-hits="4" data-linenumber="120">
+            <span class="hits">4</span>
             
 
             
 
-            <code class="ruby">        params.permit(:token, :limit)</code>
+            <code class="ruby">        params.permit(:limit)</code>
           </li>
         </div>
       
@@ -12919,18 +12919,18 @@
 
             
 
-            <code class="ruby">      put &#39;/accounts/:token/update_limit&#39;, to: &#39;accounts#update&#39;, as: &#39;update_limit&#39;</code>
+            <code class="ruby">      put &#39;/accounts/update_limit&#39;, to: &#39;accounts#update&#39;, as: &#39;update_limit&#39;</code>
           </li>
         </div>
       
         <div>
-          <li class="covered" data-hits="1" data-linenumber="7">
-            <span class="hits">1</span>
+          <li class="never" data-hits="" data-linenumber="7">
+            
             
 
             
 
-            <code class="ruby">      post &#39;/accounts/deposit&#39;, to: &#39;accounts#deposit&#39;, as: &#39;deposit&#39;</code>
+            <code class="ruby"></code>
           </li>
         </div>
       
@@ -12941,12 +12941,23 @@
 
             
 
+            <code class="ruby">      post &#39;/accounts/deposit&#39;, to: &#39;accounts#deposit&#39;, as: &#39;deposit&#39;</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="9">
+            <span class="hits">1</span>
+            
+
+            
+
             <code class="ruby">      post &#39;/accounts/transfer&#39;, to: &#39;accounts#transfer&#39;, as: &#39;transfer&#39;</code>
           </li>
         </div>
       
         <div>
-          <li class="never" data-hits="" data-linenumber="9">
+          <li class="never" data-hits="" data-linenumber="10">
             
             
 
@@ -12957,24 +12968,13 @@
         </div>
       
         <div>
-          <li class="covered" data-hits="1" data-linenumber="10">
+          <li class="covered" data-hits="1" data-linenumber="11">
             <span class="hits">1</span>
             
 
             
 
             <code class="ruby">      get &#39;/accounts/statement/:days&#39;, to: &#39;accounts#index&#39;</code>
-          </li>
-        </div>
-      
-        <div>
-          <li class="never" data-hits="" data-linenumber="11">
-            
-            
-
-            
-
-            <code class="ruby"></code>
           </li>
         </div>
       
