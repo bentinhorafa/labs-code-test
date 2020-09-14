@@ -68,7 +68,7 @@ module Api
         end
       end
 
-      def index
+      def statement
         statement = AccountStatementService.new(
           token: request.headers['Authorization'],
           days: statement_params[:days]

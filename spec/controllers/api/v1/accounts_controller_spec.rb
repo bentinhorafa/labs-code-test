@@ -353,7 +353,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     request.headers['Accept'] = 'application/json'
     request.headers['Authorization'] = token
 
-    get :index,
+    get :statement,
         params: statement_params
   end
 

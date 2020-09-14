@@ -14,7 +14,7 @@
       <img src="./assets/0.12.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2020-09-14T01:07:55-03:00">2020-09-14T01:07:55-03:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2020-09-14T01:43:22-03:00">2020-09-14T01:43:22-03:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -1473,7 +1473,7 @@
 
             
 
-            <code class="ruby">      def index</code>
+            <code class="ruby">      def statement</code>
           </li>
         </div>
       
@@ -12974,7 +12974,7 @@
 
             
 
-            <code class="ruby">      get &#39;/accounts/statement/:days&#39;, to: &#39;accounts#index&#39;</code>
+            <code class="ruby">      get &#39;/accounts/statement/(:days)&#39;, to: &#39;accounts#statement&#39;, defaults: { days: 7 }, as: &#39;statement&#39;</code>
           </li>
         </div>
       
