@@ -61,7 +61,7 @@ curl --location --request PUT 'http://localhost:3000/api/v1/accounts/update_limi
 curl --location --request POST 'http://localhost:3000/api/v1/accounts/deposit' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: 3374c2b422c535286104a047243752f6' \
+--header 'Authorization: TOKEN_DA_CONTA' \
 --data-raw '{
   "amount": 300.0
 }'
@@ -83,7 +83,7 @@ curl --location --request POST 'http://localhost:3000/api/v1/accounts/withdraw_r
 curl --location --request POST 'http://localhost:3000/api/v1/accounts/withdraw_confirm' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
---header 'Authorization: 3374c2b422c535286104a047243752f6' \
+--header 'Authorization: TOKEN_DA_CONTA' \
 --data-raw '{
   "account_withdraw_request_id": 1,
   "possibility": 2
